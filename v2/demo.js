@@ -1,9 +1,9 @@
 /* SquareBet Demo v2: fictional data ONLY. Local browser storage, no network calls. */
-const KEY='squarebet-demo-v3';
+const KEY='squarebet-demo-v4';
 const AX=[0,1,2,3,4,5,6,7,8,9];
 function shuffled(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
-function seed(){const people=['Michael Johnson','Sarah Lee','Alex Rivera','Jordan Parker','Taylor Morgan','Casey Brooks','Jamie Wilson','Morgan Reed','Riley Adams','Sam Bennett','Avery Davis','Drew Collins'];return {version:3,price:10,status:'OPEN',assignments:Array.from({length:65},(_,i)=>({position:null,owner:people[i%people.length]})),axes:null,privacy:'INITIAL',scores:[],payouts:[25,25,25,25],notice:'',revision:0}}
-function read(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s?.version===3&&Array.isArray(s.assignments))return s}catch{}return seed()}
+function seed(){const people=['Michael Johnson','Sarah Lee','Alex Rivera','Jordan Parker','Taylor Morgan','Casey Brooks','Jamie Wilson','Morgan Reed','Riley Adams','Sam Bennett','Avery Davis','Drew Collins'];return {version:4,price:10,status:'OPEN',assignments:Array.from({length:97},(_,i)=>({position:null,owner:people[i%people.length]})),axes:null,privacy:'INITIAL',scores:[],payouts:[25,25,25,25],notice:'',revision:0}}
+function read(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s?.version===4&&Array.isArray(s.assignments))return s}catch{}return seed()}
 function save(s){s.revision++;localStorage.setItem(KEY,JSON.stringify(s));return s}
 function mutate(fn){const s=read();fn(s);return save(s)}
 function commit(name,n){if(!name.trim())throw Error('Enter a fictional participant name');if(!Number.isInteger(n)||n<1)throw Error('Choose at least one square');return mutate(s=>{if(s.status!=='OPEN')throw Error('This pool is not open');if(n>100-s.assignments.length)throw Error('Not enough squares available');for(let i=0;i<n;i++)s.assignments.push({position:null,owner:name.trim()});if(s.assignments.length===100)s.status='CLOSED_AWAITING_ADMIN'})}
